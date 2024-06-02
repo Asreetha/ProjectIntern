@@ -1,0 +1,145 @@
+To make the "Logout" link redirect to the "home.html" file when clicked, you can add a simple JavaScript event listener to handle the click event and navigate to the desired page using `window.location.href`. Here's the modified HTML code with the logout functionality added:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favourite Movies - Movie App</title>
+    <style>
+        body {
+            background: url('images/new.avif') no-repeat center center/cover; /* Background image */
+            color: #333; /* Dark text for contrast */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end; /* Align navbar to the right side */
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for the form */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Adjusted max-width */
+            margin: 20px auto;
+            text-align: center;
+        }
+        h1 {
+            color: #052444; /* Darker blue for the heading */
+            margin-bottom: 20px;
+        }
+        .movie {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: left;
+            width: calc(33.33% - 30px); /* Adjusted width for 3 movies in a row */
+            display: inline-block;
+            margin-right: 20px; /* Adjusted margin for spacing between movies */
+            vertical-align: top;
+            box-sizing: border-box;
+        }
+        .movie img {
+            max-width: 100%; /* Ensure the image fits within the container */
+            border-radius: 8px;
+        }
+        .movie-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .movie-info h3 {
+            margin: 0;
+        }
+        .movie-info span {
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .green {
+            background-color: #21d07a;
+        }
+        .orange {
+            background-color: #d2d531;
+        }
+        .red {
+            background-color: #db2360;
+        }
+        .overview {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#" id="logout">Logout</a>
+    </div>
+    <div class="container">
+        <h1 id="listName"></h1>
+        <div id="listPrivacy"></div>
+        <div id="favouriteMoviesContainer"></div>
+    </div>
+
+    <script>
+        const favouriteMoviesContainer = document.getElementById('favouriteMoviesContainer');
+        const listNameElement = document.getElementById('listName');
+        const listPrivacyElement = document.getElementById('listPrivacy');
+
+        // Get list details and favourite movies from local storage
+        const listName = localStorage.getItem('listName');
+        const listPrivacy = localStorage.getItem('listPrivacy');
+        const favouriteMovies = JSON.parse(localStorage.getItem('favouriteMovies'));
+
+        // Display list name and privacy
+        listNameElement.textContent = listName;
+        listPrivacyElement.textContent = `Status: ${listPrivacy.charAt(0).toUpperCase() + listPrivacy.slice(1)}`;
+
+        // Display favourite movies
+        favouriteMovies.forEach(movie => {
+            const movieEl = document.createElement('div');
+            movieEl.className = 'movie';
+            movieEl.innerHTML = `
+                <img src="${movie.poster_path ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path : 'http://via.placeholder.com/1080x1580'}" alt="${movie.title}">
+                <div class="movie-info">
+                    <h3>${movie.title}</h3>
+                    <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
+                </div>
+                <div class="overview">
+                    <h3>Overview</h3>
+                    ${movie.overview}
+                </div>
+            `;
+            favouriteMoviesContainer.appendChild(movieEl);
+        });
+
+        function getColor(vote) {
+            if (vote >= 8) {
+                return 'green';
+            } else if (vote >= 5) {
+                return 'orange';
+            } else {
+                return 'red';
+            }
+        }
+
+        // Logout functionality
+        document.getElementById('logout').addEventListener('click', function() {
+            window.location.href = 'home.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration - Movie App</title>
+    <style>
+        body {
+            background: url('images/new.avif') no-repeat center center/cover; /* Same background image as the home page */
+            color: #333; /* Dark text for contrast */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height for the background */
+            overflow: hidden; /* Prevent scrolling */
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for the form */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            color: #052444; /* Darker blue for the heading */
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #1383ec; /* Blue background for the submit button */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0a6bb8; /* Darker blue on hover */
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
+        <form id="registrationForm" action="Login.html" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <span id="usernameError" class="error"></span>
+            
+            <input type="email" name="email" placeholder="Email" required>
+            <span id="emailError" class="error"></span>
+            
+            <input type="password" name="password" placeholder="Password" required minlength="8">
+            <span id="passwordError" class="error"></span>
+            
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" required minlength="8">
+            <span id="confirmPasswordError" class="error"></span>
+            
+            <input type="tel" name="phone" placeholder="Phone Number" required pattern="[0-9]{10}">
+            <span id="phoneError" class="error"></span>
+            
+            <input type="date" name="dob" placeholder="Date of Birth" required>
+            <span id="dobError" class="error"></span>
+            
+            <input type="submit" value="Register"> 
+            <header>
+                <nav>
+                    <a href="Login.html">If already registered Login Here!!</a>
+                </nav>
+            </header>
+        </form>
+    </div>
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            // Clear previous error messages
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+            document.getElementById('confirmPasswordError').textContent = '';
+            document.getElementById('phoneError').textContent = '';
+            document.getElementById('dobError').textContent = '';
+
+            let valid = true;
+
+            // Validate username
+            const username = event.target.username.value;
+            if (!username.match(/^[a-zA-Z0-9_]+$/)) {
+                document.getElementById('usernameError').textContent = 'Username can only contain letters, numbers, and underscores.';
+                valid = false;
+            }
+
+            // Validate email
+            const email = event.target.email.value;
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!email.match(emailPattern)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+                valid = false;
+            }
+
+            // Validate password
+            const password = event.target.password.value;
+            if (password.length < 8) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 8 characters long.';
+                valid = false;
+            }
+
+            // Validate confirm password
+            const confirmPassword = event.target.confirmPassword.value;
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+                valid = false;
+            }
+
+            // Validate phone number
+            const phone = event.target.phone.value;
+            if (!phone.match(/^[0-9]{10}$/)) {
+                document.getElementById('phoneError').textContent = 'Please enter a valid 10-digit phone number.';
+                valid = false;
+            }
+
+            // Validate date of birth
+            const dob = event.target.dob.value;
+            const dobDate = new Date(dob);
+            const today = new Date();
+            if (dobDate >= today) {
+                document.getElementById('dobError').textContent = 'Please enter a valid date of birth.';
+                valid = false;
+            }
+
+            if (!valid) {
+                event.preventDefault();
+            } else {
+                // Redirect to Login.html after successful validation
+                event.preventDefault(); // Prevent the default form submission
+                window.location.href = 'Login.html'; // Redirect to Login.html
+            }
+        });
+    </script>
+</body>
+</html>
